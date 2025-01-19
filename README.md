@@ -3,6 +3,8 @@
 View your GitHub notifications in NeoVim, with sensible defaults, and the ability to filter
 for just the types of notifications you want to see.
 
+<img width="1280" alt="gh-notifications" src="https://github.com/user-attachments/assets/3ff5a317-ddb6-44eb-aed9-334e66506953" />
+
 ## Installation
 
 ### lazy.nvim
