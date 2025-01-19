@@ -1,4 +1,5 @@
 local notify = require 'gh_notifications.notify'
+local fetch = require 'gh_notifications.fetch'
 local config = require 'gh_notifications.config'
 
 local M = {}
@@ -8,20 +9,26 @@ local M = {}
 ---@param callback function: Callback function to process the PR status
 ---@return string | nil: PR status
 local function get_pr_status(url, callback)
-    local cmd = string.format('gh api "%s" --jq ".state"', url)
-    local handle = io.popen(cmd)
-    if handle then
-        local result = handle:read '*a'
-        handle:close()
+    if url == nil or url:match '/pull' == nil then
+        callback 'N/A'
+        return
+    end
+    local cmd = {
+        'gh',
+        'api',
+        string.format('"%s"', url),
+        '--jq',
+        '.state',
+    }
+    local transform = function(result)
         result = result:gsub('"', ''):gsub('\n', '')
         if result == '' then
             callback 'N/A'
         else
             callback(result)
         end
-    else
-        notify.send_error('ERROR', 'Error: Unable to open process')
     end
+    fetch.async_exec_cmd(cmd, transform)
 end
 
 -- Process notifications and return relevant notifications

@@ -1,6 +1,6 @@
 # GitHub Notifications for Neovim
 
-View your GitHub notifications in NeoVim, with sensible defaults, and the ability to filter 
+View your GitHub notifications in NeoVim, with sensible defaults, and the ability to filter
 for just the types of notifications you want to see.
 
 ## Installation
@@ -10,6 +10,7 @@ for just the types of notifications you want to see.
 ```lua
 return {
   'jfgordon2/gh-notifications.nvim',
+  dependencies = { 'nvim-lua/plenary.nvim' },
   opts = {},
 }
 ```
@@ -55,6 +56,24 @@ require('packer').startup(function()
 end)
 ```
 
+### Extra: Snacks Dashboard Config
+
+See [snacks.nvim](https://github.com/folke/snacks.nvim/blob/main/docs/dashboard.md#github) for full config.
+
+```lua
+{
+  title = 'Notifications',
+  cmd = "nvim --headless -c ':GHNotificationsText'",
+  action = function()
+    vim.ui.open 'https://github.com/notifications'
+  end,
+  key = 'n',
+  icon = ' ',
+  height = 8,
+  enabled = true,
+}
+```
+
 ## Usage
 
 ```shell
@@ -63,6 +82,10 @@ end)
 
 # view notifications in a windowed buffer
 :GHNotificationsDisplay
+
+# print out notifications as text
+# for use in custom context such as your dashboard
+:GHNotificationsText
 ```
 
 ### Configuration
