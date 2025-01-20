@@ -8,6 +8,8 @@ By default, this tries to narrow down notifications to just what I, personally, 
 
 ## Installation
 
+This plugin requires you to have the [GitHub CLI](https://cli.github.com/) installed.
+
 ### lazy.nvim
 
 ```lua
