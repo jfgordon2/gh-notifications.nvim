@@ -48,7 +48,6 @@ require('gh_notifications').setup({
 require('packer').startup(function()
   use {
     'jfgordon2/gh-notifications.nvim',
-    requires = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('gh_notifications').setup({
         unread_only = true,
@@ -145,4 +144,3 @@ make test
 
 - [gh.nvim](https://github.com/ldelossa/gh.nvim) - truly impressive, fully featured, and excellent.
 - [github-notifications.nvim](https://github.com/rlch/github-notifications.nvim) - simple, with more detail and interactivity!
-
