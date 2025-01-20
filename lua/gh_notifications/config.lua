@@ -1,7 +1,12 @@
 local M = {}
 
+---@class PullRequestFilter
+---@field enabled boolean: Whether to see only pull requests or not
+---@field states string[]: List of pull request states to include
+
 ---@class GHNotificationsConfig
 ---@field unread_only boolean: Fetch only unread notifications
+---@field pull_request_filter PullRequestFilter: PR filter settings
 ---@field notification_reasons string[]: List of notification reasons to fetch
 M.options = {
     unread_only = false,
