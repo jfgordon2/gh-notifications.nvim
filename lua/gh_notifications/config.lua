@@ -5,6 +5,13 @@ local M = {}
 ---@field notification_reasons string[]: List of notification reasons to fetch
 M.options = {
     unread_only = false,
+    pull_request_filter = {
+        enabled = true,
+        states = {
+            'open',
+            --'closed',
+        },
+    },
     notification_reasons = {
         'assign',
         'author',

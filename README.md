@@ -1,9 +1,10 @@
 # GitHub Notifications for Neovim
 
-View your GitHub notifications in NeoVim, with sensible defaults, and the ability to filter
-for just the types of notifications you want to see.
+View your GitHub notifications in NeoVim, with sensible defaults, and the ability to filter for just the types of notifications you want to see.
 
 <img width="1280" alt="gh-notifications" src="https://github.com/user-attachments/assets/3ff5a317-ddb6-44eb-aed9-334e66506953" />
+
+By default, this tries to narrow down notifications to just what I, personally, like to see, filtering out the vast majority.  It also doesn't give full insights into what is contained in each notification, limiting to just the type, title, and URL.  If this isn't for you, there are good alternatives with much better options listed at the bottom.
 
 ## Installation
 
@@ -21,6 +22,12 @@ return {
 -- These are the default config settings
 require('gh_notifications').setup({
   unread_only = true,
+  pull_request_filter = {
+    enabled = true,
+    states = {
+      'open',
+    },
+  },
   notification_reasons = {
     "assign",
     "author",
@@ -134,3 +141,9 @@ export PATH=$PATH:$HOME/.luarocks/bin:
 ```shell
 make test
 ```
+
+## Similar Plugins
+
+- [gh.nvim](https://github.com/ldelossa/gh.nvim) - truly impressive, fully featured, and excellent.
+- [github-notifications.nvim](https://github.com/rlch/github-notifications.nvim) - simple, with more detail and interactivity!
+

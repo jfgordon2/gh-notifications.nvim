@@ -14,28 +14,19 @@ local M = {}
 ---@field unread boolean: Whether the notification is unread
 ---@field url string: GH API URL of the notification
 
--- Function to execute a shell command in a thread and capture its output
+-- Execute a shell command and return its output
 ---@param cmd string[]: Command to execute
 ---@param callback function: Callback function to process the output
----@return string | nil: Output of the command, unless errored
-function M.async_exec_cmd(cmd, callback)
-    local str_cmd = table.concat(cmd, ' ')
-    local work = uv.new_work(M.exec_cmd, callback)
-    work:queue(str_cmd)
-end
-
--- Execute a shell command and return its output
----@param cmd string: Command to execute
----@return string | nil: Output of the command, unless errored
-function M.exec_cmd(cmd)
-    local handle = io.popen(cmd)
-    if handle == nil then
-        notify.send_error('ERROR', 'Failed to open a handle to the command')
-        return
+function M.exec_cmd(cmd, callback)
+    local on_exit = function(obj)
+        if obj.code == 0 then
+            return callback(obj.stdout)
+        else
+            notify.send_error('ERROR', string.format('Failed to execute command: %s', obj.stderr))
+            return callback(nil)
+        end
     end
-    local result = handle:read '*a'
-    handle:close()
-    return result
+    vim.system(cmd, { text = true }, on_exit)
 end
 
 -- Fetch notifications using gh CLI
@@ -55,17 +46,25 @@ function M.fetch_notifications(callback)
         'notifications?all=true',
         '--jq',
         string.format(
-            '\'.[] | select(%s) | {repository: .repository.html_url, title: .subject.title, reason: .reason, last_read_at: .last_read_at, unread: .unread, url: .subject.url, pr_url: (.subject.url | sub("api.github.com/repos"; "github.com") | sub("/pulls/"; "/pull/"))}\'',
+            '.[] | select(%s) | {repository: .repository.html_url, title: .subject.title, reason: .reason, last_read_at: .last_read_at, unread: .unread, url: .subject.url}',
             reasons_filter
         ),
-        '|',
-        'jq',
-        '-s',
     }
 
-    M.async_exec_cmd(cmd, function(output)
+    M.exec_cmd(cmd, function(output)
         ---@type GHNotification[] | nil
-        local notifications = vim.json.decode(output)
+        if output == nil then
+            return callback(nil)
+        end
+        local split_output = vim.split(output, '\n')
+        local notifications = {}
+        for _, line in ipairs(split_output) do
+            if line ~= '' then
+                local notification = vim.json.decode(line)
+                notification.pr_url = notification.url:gsub('api.github.com/repos', 'github.com'):gsub('/pulls/', '/pull/')
+                table.insert(notifications, notification)
+            end
+        end
         callback(notifications)
     end)
 end

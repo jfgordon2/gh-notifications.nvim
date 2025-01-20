@@ -76,7 +76,7 @@ function M.notify_notifications(notifications)
     end
 
     for _, notification in ipairs(notifications) do
-        notify.send_notification(notification.title, notification.reason, notification.pr_url, notification.pr_url)
+        notify.send_notification(notification.reason, notification.title, notification.pr_url, notification.pr_url)
     end
 end
 
