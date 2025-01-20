@@ -35,6 +35,10 @@ local function get_pr_status(url, callback)
     fetch.exec_cmd(cmd, transform)
 end
 
+-- Apply the PR filter
+---@param notifications GHNotification[]: List of notifications to filter
+---@param callback function: Callback function to process the filtered notifications
+---@return GHNotification[]: Filtered notifications
 function M.apply_pr_filter(notifications, callback)
     local filtered_notifications = {}
     local total = #notifications
@@ -64,6 +68,10 @@ function M.apply_pr_filter(notifications, callback)
     handle_notification(1)
 end
 
+-- Apply the Unread Only filter
+---@param notifications GHNotification[]: List of notifications to filter
+---@param callback function: Callback function to process the filtered notifications
+---@return GHNotification[]: Filtered notifications
 function M.apply_unread_only_filter(notifications, callback)
     local filtered_notifications = {}
     local total = #notifications
