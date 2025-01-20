@@ -13,7 +13,6 @@ By default, this tries to narrow down notifications to just what I, personally, 
 ```lua
 return {
   'jfgordon2/gh-notifications.nvim',
-  dependencies = { 'nvim-lua/plenary.nvim' },
   opts = {},
 }
 ```
