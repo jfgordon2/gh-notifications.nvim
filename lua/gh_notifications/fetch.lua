@@ -1,5 +1,4 @@
 local vim = vim
-local uv = vim.uv
 local config = require 'gh_notifications.config'
 local notify = require 'gh_notifications.notify'
 

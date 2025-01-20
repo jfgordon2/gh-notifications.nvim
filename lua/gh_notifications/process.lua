@@ -1,4 +1,3 @@
-local notify = require 'gh_notifications.notify'
 local fetch = require 'gh_notifications.fetch'
 local config = require 'gh_notifications.config'
 
@@ -65,6 +64,7 @@ function M.apply_pr_filter(notifications, callback)
             handle_notification(index + 1)
         end
     end
+    ---@diagnostic disable-next-line: missing-return
     handle_notification(1)
 end
 
@@ -89,6 +89,7 @@ function M.apply_unread_only_filter(notifications, callback)
         end
         handle_notification(index + 1)
     end
+    ---@diagnostic disable-next-line: missing-return
     handle_notification(1)
 end
 

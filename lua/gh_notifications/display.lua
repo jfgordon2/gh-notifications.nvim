@@ -2,11 +2,12 @@ local notify = require 'gh_notifications.notify'
 
 local M = {}
 
+-- Show a notification if there are no notifications to display
 local notify_no_notifications = function()
     notify.send_notification('GitHub Notifications', nil, 'No notifications to display 🎉', nil)
 end
 
--- Function to create a floating window and display notifications
+-- Display notifications in a floating window
 ---@param notifications GHNotification[] | nil: List of notifications to display
 function M.display_notifications(notifications)
     if notifications == nil or #notifications == 0 then
@@ -68,6 +69,7 @@ function M.display_notifications(notifications)
     end)
 end
 
+-- Display notifications using the notify api
 ---@param notifications GHNotification[] | nil: List of notifications to notify
 function M.notify_notifications(notifications)
     if notifications == nil or #notifications == 0 then
@@ -80,6 +82,8 @@ function M.notify_notifications(notifications)
     end
 end
 
+-- Display notifications in the terminal
+---@param notifications GHNotification[] | nil: List of notifications to display
 function M.display_notifications_text(notifications)
     if notifications == nil or #notifications == 0 then
         print 'No notifications to display 🎉'
@@ -92,6 +96,7 @@ function M.display_notifications_text(notifications)
         return io.write(s:format(...))
     end
 
+    ---@diagnostic disable-next-line: param-type-mismatch
     for _, notification in ipairs(notifications) do
         printf('%s%s%s - %s\n', green, notification.reason, end_color, notification.title)
         printf('%s%s%s\n', gray, notification.pr_url, end_color)
