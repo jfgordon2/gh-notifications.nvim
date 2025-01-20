@@ -11,6 +11,8 @@ function M.setup(user_opts)
     config.setup(user_opts)
 end
 
+-- Check for required dependencies
+---@return boolean: True if dependencies are met
 function M.has_dependencies()
     if not vim.fn.executable 'gh' then
         vim.schedule(function()
